@@ -4,9 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --open --host",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview --open --host",
+    "deploy": "surge ./dist jvh-grid-generator.surge.sh",
+    "postdeploy": "start brave https://jvh-grid-generator.surge.sh"
   },
   "devDependencies": {
     "@types/randomcolor": "^0.5.9",
