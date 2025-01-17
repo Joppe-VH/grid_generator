@@ -8,15 +8,15 @@ app.insertAdjacentHTML(
     <ul>
       <li>
         <label>Rijen</label>
-        <input type="number" min="1" id="rows" value="10"/>
+        <input type="number" min="1" id="rows" value="50"/>
       </li>
       <li>
         <label>Kolommen</label>
-        <input type="number" min="1" id="columns" value="10" />
+        <input type="number" min="1" id="columns" value="50" />
       </li>
       <li>
         <label>Kleuren</label>
-        <input type="number" min="1" id="colors" value="20" />
+        <input type="number" min="1" id="colors" value="10" />
       </li>
     </ul>
     <button>GO!</button>
@@ -46,7 +46,7 @@ setStyles(app, {
   minHeight: "100vh",
   maxWidth: "100vw",
   display: "grid",
-  gridTemplate: "auto 1fr / 1fr  auto",
+  gridTemplate: "auto 1fr / 1fr  180px",
   gridTemplateAreas: `
     "inputzone overview"
     "drawzone  overview"`,
@@ -63,7 +63,7 @@ setStyles(inputZone, {
 });
 
 setStyles(drawzone, {
-  margin: "20px",
+  margin: "40px",
   borderRadius: "20px",
   overflow: "hidden",
 });
@@ -72,6 +72,7 @@ setStyles(inputZoneUl, {
   display: "grid",
   gridTemplateColumns: "auto 1fr",
   gap: "20px",
+  padding: "0",
 });
 
 setStyles(inputZoneUl.querySelectorAll<HTMLElement>("& > li"), {
@@ -145,7 +146,7 @@ goButton.addEventListener("click", () => {
     const label = document.createElement("label");
     label.innerText = color.count.toString();
     li.insertAdjacentElement("afterbegin", square);
-    li.insertAdjacentElement("beforeend", label);
+    square.insertAdjacentElement("beforeend", label);
     overviewUl.insertAdjacentElement("beforeend", li);
 
     setStyles(li, {
@@ -158,12 +159,30 @@ goButton.addEventListener("click", () => {
 
     setStyles(square, {
       display: "inline-block",
-      width: "80px",
+      minWidth: "80px",
       aspectRatio: "1/1",
       backgroundColor: color.color,
       border: "1px solid black",
       borderRadius: "10px",
+      placeItems: "center",
+      placeContent: "center",
+      cursor: "pointer",
     });
+
+    setStyles(label, {
+      display: "block",
+      color: "#1a1b26",
+      padding: "5px",
+      fontWeight: "600",
+      fontSize: "2rem",
+      pointerEvents: "none",
+    });
+
+    const colorLabel = label.cloneNode(true) as HTMLLabelElement;
+
+    colorLabel.innerText = color.color;
+    colorLabel.style.fontSize = "1rem";
+    square.insertAdjacentElement("beforeend", colorLabel);
   }
 });
 
@@ -231,5 +250,20 @@ style.innerText = `
   input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
     margin: 0; 
+  }
+  ::-webkit-scrollbar {
+    width: 20px;
+  }
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background-color: #24283b;
+    border-radius: 20px;
+    border: 6px solid transparent;
+    background-clip: content-box;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #414868;
   }`;
 document.head.insertAdjacentElement("beforeend", style);
