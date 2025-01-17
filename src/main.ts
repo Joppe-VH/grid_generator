@@ -16,7 +16,7 @@ app.insertAdjacentHTML(
       </li>
       <li>
         <label>Kleuren</label>
-        <input type="number" id="colors" value="100" />
+        <input type="number" id="colors" value="20" />
       </li>
     </ul>
     <button>GO!</button>
@@ -42,6 +42,7 @@ setStyles(document.querySelectorAll<HTMLElement>("*"), {
 });
 
 setStyles(app, {
+  backgroundColor: "#1a1b26",
   minHeight: "100vh",
   maxWidth: "100vw",
   display: "grid",
@@ -57,7 +58,14 @@ setStyles(inputZone, {
   gridTemplateColumns: "1fr 1fr",
   gap: "40px",
   padding: "40px",
-  borderBottom: "solid 1px black",
+  borderBottom: "solid 5px #24283b",
+  color: "#9aa5ce",
+});
+
+setStyles(drawzone, {
+  margin: "20px",
+  borderRadius: "20px",
+  overflow: "hidden",
 });
 
 setStyles(inputZoneUl, {
@@ -75,15 +83,25 @@ setStyles(inputZoneUl.querySelectorAll<HTMLElement>("& > li"), {
 
 setStyles([rowInput, columnInput, colorInput, goButton], {
   padding: "10px",
-  backgroundColor: "green",
+  backgroundColor: "#414868",
   borderRadius: "10px",
   fontSize: "2rem",
   minWidth: "200px",
+  color: "#9ece6a",
+  border: "none",
+  outline: "none",
+});
+
+setStyles(goButton, {
+  color: "#9ece6a",
+  backgroundColor: "#414868",
+  fontSize: "7rem",
+  fontWeight: "900",
 });
 
 setStyles(overview, {
   gridArea: "overview",
-  borderLeft: "solid 1px black",
+  borderLeft: "solid 5px #24283b",
   overflow: "auto",
 });
 
@@ -136,6 +154,7 @@ goButton.addEventListener("click", () => {
       alignItems: "center",
       padding: "20px",
       gap: "20px",
+      color: "#9aa5ce",
     });
 
     setStyles(square, {
@@ -144,6 +163,21 @@ goButton.addEventListener("click", () => {
       aspectRatio: "1/1",
       backgroundColor: color.color,
       border: "1px solid black",
+      borderRadius: "10px",
     });
   }
+});
+
+goButton.addEventListener("mouseenter", () => {
+  setStyles(goButton, {
+    backgroundColor: "#7aa2f7",
+    color: "#24283b",
+  });
+});
+
+goButton.addEventListener("mouseleave", () => {
+  setStyles(goButton, {
+    color: "#9ece6a",
+    backgroundColor: "#414868",
+  });
 });
