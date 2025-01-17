@@ -1,3 +1,5 @@
+// Allows for setting multiple style properties at once.
+// takes either a single element, an array of elements, or a nodeList of elements.
 export function setStyles(
   element: HTMLElement,
   styles: Partial<CSSStyleDeclaration>
