@@ -1,1 +1,149 @@
+import randomcolor from "randomcolor";
+import { setStyles } from "./util";
 
+const app = document.querySelector<HTMLDivElement>("#app")!;
+app.insertAdjacentHTML(
+  "afterbegin",
+  `<section id="inputzone">
+    <ul>
+      <li>
+        <label>Rijen</label>
+        <input type="number" id="rows" value="10"/>
+      </li>
+      <li>
+        <label>Kolommen</label>
+        <input type="number" id="columns" value="10" />
+      </li>
+      <li>
+        <label>Kleuren</label>
+        <input type="number" id="colors" value="100" />
+      </li>
+    </ul>
+    <button>GO!</button>
+  </section>
+  <section id="overview">
+    <ul></ul>
+  </section>
+  <section id="drawzone"></section>`
+);
+const inputZone = app.querySelector<HTMLElement>("#inputzone")!;
+const overview = app.querySelector<HTMLUListElement>("#overview")!;
+const drawzone = app.querySelector<HTMLElement>("#drawzone")!;
+const inputZoneUl = inputZone.querySelector<HTMLUListElement>("& > ul")!;
+const overviewUl = overview.querySelector<HTMLUListElement>("& > ul")!;
+const rowInput = inputZoneUl.querySelector<HTMLInputElement>("#rows")!;
+const columnInput = inputZoneUl.querySelector<HTMLInputElement>("#columns")!;
+const colorInput = inputZoneUl.querySelector<HTMLInputElement>("#colors")!;
+const goButton = inputZone.querySelector<HTMLButtonElement>("& > button")!;
+
+setStyles(document.querySelectorAll<HTMLElement>("*"), {
+  boxSizing: "border-box",
+  margin: "0",
+});
+
+setStyles(app, {
+  minHeight: "100vh",
+  maxWidth: "100vw",
+  display: "grid",
+  gridTemplate: "auto 1fr / 1fr  auto",
+  gridTemplateAreas: `
+    "inputzone overview"
+    "drawzone  overview"`,
+  fontSize: "2rem",
+});
+
+setStyles(inputZone, {
+  display: "grid",
+  gridTemplateColumns: "1fr 1fr",
+  gap: "40px",
+  padding: "40px",
+  borderBottom: "solid 1px black",
+});
+
+setStyles(inputZoneUl, {
+  display: "grid",
+  gridTemplateColumns: "auto 1fr",
+  gap: "20px",
+});
+
+setStyles(inputZoneUl.querySelectorAll<HTMLElement>("& > li"), {
+  display: "grid",
+  gridTemplateColumns: "subgrid",
+  gridColumn: "1/-1",
+  alignItems: "center",
+});
+
+setStyles([rowInput, columnInput, colorInput, goButton], {
+  padding: "10px",
+  backgroundColor: "green",
+  borderRadius: "10px",
+  fontSize: "2rem",
+  minWidth: "200px",
+});
+
+setStyles(overview, {
+  gridArea: "overview",
+  borderLeft: "solid 1px black",
+  overflow: "auto",
+});
+
+setStyles(overviewUl, {
+  display: "flex",
+  flexDirection: "column",
+  flexWrap: "wrap",
+  maxHeight: "100vh",
+  padding: "20px",
+});
+
+goButton.addEventListener("click", () => {
+  const columns = +columnInput.value;
+  const rows = +rowInput.value;
+  const colors = [...Array(+colorInput.value)].map((_) => ({
+    color: randomcolor() as string,
+    count: 0,
+  }));
+
+  setStyles(drawzone, {
+    display: "grid",
+    gridTemplateColumns: `repeat(${columns}, 1fr)`,
+    gridTemplateRows: `repeat(${rows}, 1fr)`,
+  });
+
+  drawzone.innerHTML = "";
+  for (const _ of Array(columns * rows)) {
+    const color = colors[Math.floor(Math.random() * colors.length)];
+    color.count++;
+
+    const div = document.createElement("div");
+    div.style.backgroundColor = color.color;
+    drawzone.insertAdjacentElement("beforeend", div);
+  }
+
+  overviewUl.innerHTML = "";
+  colors.sort((a, b) => b.count - a.count);
+  for (const color of colors) {
+    // if (color.count < 1) continue;
+    const li = document.createElement("li");
+    const square = document.createElement("span");
+    const label = document.createElement("label");
+    label.innerText = color.count.toString();
+    li.insertAdjacentElement("afterbegin", square);
+    li.insertAdjacentElement("beforeend", label);
+    overviewUl.insertAdjacentElement("beforeend", li);
+
+    setStyles(li, {
+      display: "flex",
+      alignItems: "center",
+      padding: "20px",
+      gap: "20px",
+    });
+
+    setStyles(square, {
+      display: "inline-block",
+      width: "80px",
+      aspectRatio: "1/1",
+      backgroundColor: color.color,
+      border: "1px solid black",
+    });
+  }
+});
