@@ -180,9 +180,39 @@ goButton.addEventListener("click", () => {
 
     const colorLabel = label.cloneNode(true) as HTMLLabelElement;
 
-    colorLabel.innerText = color.color;
-    colorLabel.style.fontSize = "1rem";
+    colorLabel.innerText = "Copy\n" + color.color;
     square.insertAdjacentElement("beforeend", colorLabel);
+
+    setStyles(colorLabel, {
+      fontSize: "1rem",
+      textAlign: "center",
+      display: "none",
+    });
+
+    square.addEventListener("click", () => {
+      navigator.clipboard.writeText(color.color);
+    });
+    square.addEventListener("mouseenter", () => {
+      label.style.display = "none";
+      colorLabel.style.display = "block";
+    });
+    square.addEventListener("mouseleave", () => {
+      label.style.display = "block";
+      colorLabel.style.display = "none";
+    });
+    square.addEventListener("mousedown", () => {
+      setStyles(square, {
+        translate: "0 1px",
+        boxShadow: "inset 1px 2px 5px rgba(36, 40, 59, 0.3)",
+      });
+    });
+
+    square.addEventListener("mouseup", () => {
+      setStyles(square, {
+        translate: "0 0",
+        boxShadow: "none",
+      });
+    });
   }
 });
 
