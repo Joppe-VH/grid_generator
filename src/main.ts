@@ -108,7 +108,6 @@ setStyles(overview, {
 setStyles(overviewUl, {
   display: "flex",
   flexDirection: "column",
-  flexWrap: "wrap",
   maxHeight: "100vh",
   padding: "20px",
 });
