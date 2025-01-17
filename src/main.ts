@@ -8,15 +8,15 @@ app.insertAdjacentHTML(
     <ul>
       <li>
         <label>Rijen</label>
-        <input type="number" id="rows" value="10"/>
+        <input type="number" min="1" id="rows" value="10"/>
       </li>
       <li>
         <label>Kolommen</label>
-        <input type="number" id="columns" value="10" />
+        <input type="number" min="1" id="columns" value="10" />
       </li>
       <li>
         <label>Kleuren</label>
-        <input type="number" id="colors" value="20" />
+        <input type="number" min="1" id="colors" value="20" />
       </li>
     </ul>
     <button>GO!</button>
@@ -86,7 +86,7 @@ setStyles([rowInput, columnInput, colorInput, goButton], {
   backgroundColor: "#414868",
   borderRadius: "10px",
   fontSize: "2rem",
-  minWidth: "200px",
+  minWidth: "300px",
   color: "#9ece6a",
   border: "none",
   outline: "none",
@@ -181,3 +181,56 @@ goButton.addEventListener("mouseleave", () => {
     backgroundColor: "#414868",
   });
 });
+
+goButton.addEventListener("mousedown", () => {
+  setStyles(goButton, {
+    translate: "0 2px",
+    boxShadow: "inset 2px 4px 10px #24283b",
+  });
+});
+
+goButton.addEventListener("mouseup", () => {
+  setStyles(goButton, {
+    translate: "0 0",
+    boxShadow: "none",
+  });
+});
+
+for (const input of [rowInput, columnInput, colorInput]) {
+  const tooltip = document.createElement("span");
+  tooltip.innerText = "scroll to adjust";
+  setStyles(tooltip, {
+    position: "absolute",
+    right: "20px",
+    top: "0",
+    height: "100%",
+    alignContent: "center",
+    color: "#24283b",
+    visibility: "hidden",
+    pointerEvents: "none",
+  });
+  const li = input.parentElement!;
+  li.style.position = "relative";
+  li.insertAdjacentElement("beforeend", tooltip);
+
+  input.addEventListener("wheel", () => {});
+  input.addEventListener("mouseover", () => {
+    input.focus();
+  });
+
+  input.addEventListener("mouseenter", () => {
+    tooltip.style.visibility = "visible";
+  });
+  input.addEventListener("mouseleave", () => {
+    tooltip.style.visibility = "hidden";
+  });
+}
+
+const style = document.createElement("style");
+style.innerText = `
+  input[type=number]::-webkit-inner-spin-button, 
+  input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
+  }`;
+document.head.insertAdjacentElement("beforeend", style);
